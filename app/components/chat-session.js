@@ -1,7 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  messages: [],
+  messages: nil,
+  
+  resetMessages: function() {
+    this.set('messages', []);
+  }.on('init'),
 
   didInsertElement: function(){
     this.set('chatKey', 'chat-'+this.get('ids'));
