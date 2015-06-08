@@ -4,6 +4,8 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'ember-poc',
     environment: environment,
+    contentSecurityPolicy: { 'connect-src': "'self' wss://*.firebaseio.com" },
+    firebase: 'https://blistering-torch-8966.firebaseio.com',
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
@@ -14,17 +16,38 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-    }
+      apiRoot: 'http://localhost:8000/v1'
+    },
+
+    contentSecurityPolicy: {
+      'default-src': "'none'",
+      'media-src': "'self'",
+      'font-src': "'self' https://fonts.gstatic.com",
+      'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+      'connect-src': "'self' http://localhost:8000 wss://*.firebaseio.com",
+      'frame-src': '',
+      'img-src': "'self' data:",
+      'script-src': "'self' 'unsafe-inline' http://*:35729 https://*.firebaseio.com",
+    },
+
+    'simple-auth' :{
+      authorizer: 'simple-auth-authorizer:token',
+      routeAfterAuthentication: '/',
+      crossOriginWhitelist: ['http://localhost:8000/']
+    },
+
+    'simple-auth-token': {
+      refreshAccessTokens: true,
+      timeFactor: 1,
+      refreshLeeway: 300,
+      authorizationPrefix: 'Token ',
+      tokenPropertyName: 'login.key',
+      serverTokenEndpoint: 'http://localhost:8000/auth/login'
+    },
   };
 
   if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.APP.LOG_TRANSITIONS = true;
   }
 
   if (environment === 'test') {
